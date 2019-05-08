@@ -1,5 +1,8 @@
-import json, timeit
+import time
+import json
 from Miller_Primality import miller_prime_test as mp_is_prime
+
+start = time.perf_counter()
 
 f = open('sieve-10m.txt', 'r')
 
@@ -8,6 +11,7 @@ primes = json.load(f)
 f.close()
 
 searchlen = len([x for x in primes if x < 10**4])
+
 
 # pairwise(a, b) determines if "ab" and "ba" are both prime.
 # requires: a, b are positive integers.
@@ -31,6 +35,7 @@ for a in range(searchlen):
 solution = []
 minsize = 0
 
+
 def find_pair_set(depth, value, intersection):
     global solution
     if value not in pair_dict:
@@ -49,9 +54,9 @@ def find_pair_set(depth, value, intersection):
             solution.insert(0, value)
             return True
 
+
 def find_pair_set_wrapper(size):
     global solution, minsize
-    print("Starting wrapper")
     for p in pair_dict:
         common = set(pair_dict[p])
         if len(common) < size-1:
@@ -67,4 +72,6 @@ def find_pair_set_wrapper(size):
     else:
         print("Minsize: %d" % minsize)
 
-print("Time:", timeit.timeit(setup='from __main__ import find_pair_set_wrapper', stmt='find_pair_set_wrapper(5)', number=1))
+find_pair_set_wrapper(5)
+
+print("Time:", round(time.perf_counter() - start, 3))
