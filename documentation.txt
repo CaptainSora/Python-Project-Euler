@@ -1,0 +1,52 @@
+import time
+
+
+def foo(bar):
+    """This is a single-line docstring."""
+    ...
+
+
+def fizz(buzz):
+    """This is a multi-line docstring.
+
+    The arguments should be described here:
+    buzz: a fake argument
+
+    And examples can be placed here: (not sure if VSCode runs these)
+    >>>fizz(buzz1)
+    1
+    """
+    ...
+
+
+print("Time:", round(time.perf_counter() - start, 3))
+
+===================================================================
+
+Assertions vs Raise:
+    Assertions should be used for fatal errors where the issue cannot be handled by code
+    Raise should be used for non-fatal errors (such as invalid input) where the issue can be
+      solved with the use of some code. Try/except blocks are very useful for raising exceptions.
+
+Docstrings vs comments:
+    Docstrings are mandatory for every function. Can also be used for a module.
+    In general, docstrings are for the client using the function, and comments are for 
+      whoever is taking care of the code. This means that docstrings should explain what
+      whereas comments explain how.
+    Comments should also be used to explain:
+        Specific information on snippets of code (e.g. variables)
+        Complex parts of code (perhaps for future optimization)
+        Workarounds of any kind
+        Anything you may not have control over
+        Any design choices (e.g. choosing simplicity over computation time), especially if
+          a future code maintainer may question the implementation
+    Comments can be used for (but keep to a minimum):
+        TODOs
+        BUGs and FIXMEs
+
+============================================================================
+
+Resources:
+    https://stackoverflow.com/questions/2745076/what-are-the-differences-between-git-commit-and-git-push
+    https://airbrake.io/blog/python-exception-handling/class-hierarchy
+    http://www.notyourdadsit.com/blog/2018/4/3/cheatsheet-setup-github-on-visual-studio-code
