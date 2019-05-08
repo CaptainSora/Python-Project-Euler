@@ -13,10 +13,13 @@ f.close()
 searchlen = len([x for x in primes if x < 10**4])
 
 
-# pairwise(a, b) determines if "ab" and "ba" are both prime.
 # requires: a, b are positive integers.
-# example: pairwise(3, 7) -> True (both 37 and 73 are prime)
 def pairwise(a, b):
+    """ Determines if the concatenation of a and b in both ways is prime.
+
+    >>>pairwise(3, 7)
+    True
+    """
     if mp_is_prime(int(str(b) + str(a))) and mp_is_prime(int(str(a) + str(b))):
         return True
     return False

@@ -44,6 +44,10 @@ Docstrings vs comments:
         TODOs
         BUGs and FIXMEs
 
+Function type requirements:
+    Only worry about types if it's a system entry point (e.g. user input).
+    Otherwise, Garbage in -> Garbage out.
+
 ============================================================================
 
 Resources:
