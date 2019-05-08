@@ -1,4 +1,4 @@
-import json
+import json, timeit
 from Miller_Primality import miller_prime_test as mp_is_prime
 
 f = open('sieve-10m.txt', 'r')
@@ -67,4 +67,4 @@ def find_pair_set_wrapper(size):
     else:
         print("Minsize: %d" % minsize)
 
-find_pair_set_wrapper(5)
+print("Time:", timeit.timeit(setup='from __main__ import find_pair_set_wrapper', stmt='find_pair_set_wrapper(5)', number=1))
