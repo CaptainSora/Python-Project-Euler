@@ -1,26 +1,24 @@
 import time
 import json
-from Miller_Primality import miller_prime_test as mp_is_prime
+from runtime import record_time
+from Miller_Primality import is_prime
 
-start = time.perf_counter()
+filestart = time.perf_counter()
 
 f = open('sieve-10m.txt', 'r')
-
 primes = json.load(f)
-
 f.close()
 
 searchlen = len([x for x in primes if x < 10**4])
 
 
-# requires: a, b are positive integers.
 def pairwise(a, b):
     """ Determines if the concatenation of a and b in both ways is prime.
 
     >>>pairwise(3, 7)
     True
     """
-    if mp_is_prime(int(str(b) + str(a))) and mp_is_prime(int(str(a) + str(b))):
+    if is_prime(int(str(b) + str(a))) and is_prime(int(str(a) + str(b))):
         return True
     return False
 
@@ -28,7 +26,7 @@ def pairwise(a, b):
 pair_dict = {}
 
 for a in range(searchlen):
-    for b in range(a+1, searchlen):
+    for b in range(a + 1, searchlen):
         if pairwise(primes[a], primes[b]):
             if primes[a] in pair_dict:
                 pair_dict[primes[a]].append(primes[b])
@@ -44,7 +42,7 @@ def find_pair_set(depth, value, intersection):
     if value not in pair_dict:
         return False
     common = intersection & set(pair_dict[value])
-    if len(common) < depth-1:
+    if len(common) < depth - 1:
         return False
     if depth == 2:
         if len(common) >= 1:
@@ -53,7 +51,7 @@ def find_pair_set(depth, value, intersection):
             return True
         return False
     for prime in common:
-        if find_pair_set(depth-1, prime, common):
+        if find_pair_set(depth - 1, prime, common):
             solution.insert(0, value)
             return True
 
@@ -62,10 +60,10 @@ def find_pair_set_wrapper(size):
     global solution, minsize
     for p in pair_dict:
         common = set(pair_dict[p])
-        if len(common) < size-1:
+        if len(common) < size - 1:
             continue
         for prime in common:
-            if find_pair_set(size-1, prime, common):
+            if find_pair_set(size - 1, prime, common):
                 solution.insert(0, p)
                 print("Found solution of size %d: " % size, solution)
                 if minsize == 0 or sum(solution) < minsize:
@@ -75,6 +73,15 @@ def find_pair_set_wrapper(size):
     else:
         print("Minsize: %d" % minsize)
 
-find_pair_set_wrapper(5)
 
-print("Time:", round(time.perf_counter() - start, 3))
+def runtime(output=False):
+    funcstart = time.perf_counter()
+    # FUNCTION CALL
+    find_pair_set_wrapper(5)
+    functime = time.perf_counter() - funcstart
+    filetime = time.perf_counter() - filestart
+    if output:
+        print(f"Time: {functime:.3}")
+    record_time(60, functime, filetime)
+
+runtime(True)
