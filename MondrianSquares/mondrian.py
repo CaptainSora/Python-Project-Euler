@@ -5,25 +5,48 @@ import numpy
 import math
 from itertools import combinations
 
+# Notes
+# Time it with and without sorting
+# in search_sum while loop, should be able to continue if this loop is a
+#   strict subset of the previous loop
+
+
 # A Rect object is a numpy array [size, length, width]
+
+
+def defect(numset):
+    """Returns the defect of a set."""
+    return max(numset) - min(numset)
+
+
+def optimal(size):
+    """Returns a(n) for 3 <= n <= 57 where a(n) is the optimal tiling of the
+    Mondrian Art Puzzle.
+    """
+    OEIS = [
+        0, 0, 0, 2, 4, 4, 5, 5, 6, 6, 8, 6, 7, 8, 6, 8, 8, 8, 8, 8, 9, 9, 9,
+        8, 9, 10, 9, 10, 9, 9, 11, 11, 10, 12, 12, 11, 12, 11, 10, 11, 12, 13,
+        12, 12, 12, 13, 13, 12, 14, 12, 13, 14, 13, 14, 15, 14, 14, 15
+    ]
+    return OEIS[size]
 
 
 def create_rect_list(size):
     """Returns an array of rect objects."""
     # The upper bound for rectangle objects.
     ceiling = math.ceil(size * size / 2)
-    rect_list = numpy.array([], dtype=numpy.int32)
+    rect_list = numpy.array([], dtype=numpy.uint8)
     for a in range(1, size + 1):
         for b in range(a, size + 1):
             if a * b > ceiling:
                 break
             rect_list = numpy.append(rect_list, [a * b, a, b])
     rect_list = rect_list.reshape(-1, 3)
-    numpy.sort(rect_list, axis=0)
+    print("Rectangle list generation complete")
     return rect_list
 
 
-def find_permutation(size, numlist):
+def find_subset(size, numlist):
     """Returns all subsets of numlist which sum up to size^2"""
     valid = set()
     area = size * size
@@ -31,6 +54,7 @@ def find_permutation(size, numlist):
         comb_gen = combinations(numlist, length)
         for a in comb_gen:
             if sum(a) == area:
+                # print("Found a subset", a)
                 valid.add(a)
     return valid
 
@@ -48,16 +72,14 @@ def search_sum(size, bound=0):
     valid = set()
     while True:
         # Search start index
-        start = numpy.where(size_list >= size_list[-1] - bound)[0][0]
-        valid |= find_permutation(size, size_list[start:])
-        if start == 0:
+        searchlist = [x for x in size_list if x >= size_list[-1] - bound]
+        print(f"Searching range {searchlist[0]} to {searchlist[-1]}")
+        valid |= find_subset(size, searchlist)
+        if size_list[-1] <= bound + 1:
             break
         size_list = [x for x in size_list if x < size_list[-1]]
-    return valid
-
-
-def defect(numset):
-    return max(numset) - min(numset)
+    print(rect_list)
+    return [rect_list, valid]
 
 
 def min_theoretical_defect(size):
@@ -68,4 +90,4 @@ def min_theoretical_defect(size):
         tdefect = min(tdefect, defect(subset))
     return tdefect
 
-print([min_theoretical_defect(x) for x in range(3, 10)])
+search_sum(15, optimal(15))
