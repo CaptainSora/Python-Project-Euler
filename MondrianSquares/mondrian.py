@@ -90,4 +90,21 @@ def min_theoretical_defect(size):
         tdefect = min(tdefect, defect(subset))
     return tdefect
 
-search_sum(15, optimal(15))
+
+def subsetsum(sum, rectlist):
+    nlist = []
+    for rect in rectlist:
+        area = rect[0] * rect[1]
+        print("Area:", area)
+        if area < sum:
+            index = rectlist.index(rect) + 1
+            nlist.extend([x.append(rect) for x in
+                          subsetsum(sum - area, rectlist[index:])])
+        elif area == sum:
+            nlist.append([rect])
+    print(f"Sum: {sum}\nnlist: {nlist}")
+    return nlist
+
+# search_sum(15, optimal(15))
+
+print(subsetsum(9, [(1, 1), (1, 2), (1, 3), (2, 2)]))
