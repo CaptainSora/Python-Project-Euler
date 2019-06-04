@@ -4,6 +4,7 @@ rectangles.
 import numpy
 import math
 from itertools import combinations
+import time
 
 # Notes
 # Time it with and without sorting
@@ -32,7 +33,7 @@ def optimal(size):
 
 
 def create_rect_list(size):
-    """Returns an array of rect objects."""
+    """Returns an array of rect objects for the size x size square."""
     # The upper bound for rectangle objects.
     ceiling = math.ceil(size * size / 2)
     rect_list = numpy.array([], dtype=numpy.uint8)
@@ -42,7 +43,9 @@ def create_rect_list(size):
                 break
             rect_list = numpy.append(rect_list, [a * b, a, b])
     rect_list = rect_list.reshape(-1, 3)
+    """
     print("Rectangle list generation complete")
+    """
     return rect_list
 
 
@@ -59,6 +62,7 @@ def find_subset(size, numlist):
     return valid
 
 
+# Uses create_rect_list, find_subset
 def search_sum(size, bound=0):
     """Returns all possible arrangements of rects with valid area"""
     if bound == 0:  # See oeis.org/A276523
@@ -68,20 +72,26 @@ def search_sum(size, bound=0):
             bound = size
     rect_list = create_rect_list(size)
     size_list = rect_list[:, 0]  # View of rect_list
-    # print(rect_list)
     valid = set()
+    lower = 0
     while True:
-        # Search start index
         searchlist = [x for x in size_list if x >= size_list[-1] - bound]
-        print(f"Searching range {searchlist[0]} to {searchlist[-1]}")
-        valid |= find_subset(size, searchlist)
-        if size_list[-1] <= bound + 1:
-            break
+        # Check if range overlaps
+        if searchlist[0] != lower:
+            # Search start index
+            """
+            print(f"Searching range {searchlist[0]} to {searchlist[-1]}")
+            """
+            valid |= find_subset(size, searchlist)
+            if size_list[-1] <= bound + 1:
+                break
+        lower = searchlist[0]
         size_list = [x for x in size_list if x < size_list[-1]]
-    print(rect_list)
+    # print(rect_list)
     return [rect_list, valid]
 
 
+# Uses: search_sum
 def min_theoretical_defect(size):
     all_sets = search_sum(size)
     tdefect = size
@@ -91,20 +101,17 @@ def min_theoretical_defect(size):
     return tdefect
 
 
+# Deprecated
 def subsetsum(sum, rectlist):
     nlist = []
-    for rect in rectlist:
-        area = rect[0] * rect[1]
-        print("Area:", area)
+    rectsize = len(rectlist)
+    for i in range(rectsize):
+        area = rectlist[i][0] * rectlist[i][1]
         if area < sum:
-            index = rectlist.index(rect) + 1
-            nlist.extend([x.append(rect) for x in
-                          subsetsum(sum - area, rectlist[index:])])
+            rlist = subsetsum(sum - area, rectlist[i + 1:])
+            for a in rlist:
+                a.append([rectlist[i]])
+                nlist.append(a)
         elif area == sum:
-            nlist.append([rect])
-    print(f"Sum: {sum}\nnlist: {nlist}")
+            nlist.append([rectlist[i]])
     return nlist
-
-# search_sum(15, optimal(15))
-
-print(subsetsum(9, [(1, 1), (1, 2), (1, 3), (2, 2)]))
