@@ -59,6 +59,21 @@ def find_subset(size, numlist):
     return valid
 
 
+def subsetsum(sum, rectlist):
+    nlist = []
+    rectsize = len(rectlist)
+    for i in range(rectsize):
+        area = rectlist[i][0] * rectlist[i][1]
+        if area < sum:
+            rlist = subsetsum(sum - area, rectlist[i + 1:])
+            for a in rlist:
+                a.append([rectlist[i]])
+                nlist.append(a)
+        elif area == sum:
+            nlist.append([rectlist[i]])
+    return nlist
+
+
 # ========================================================================== #
 # Uses create_rect_list, find_subset
 def search_sum(size, bound=0, quiet=False):
@@ -98,22 +113,6 @@ def min_theoretical_defect(size):
         subset = all_sets.pop()
         tdefect = min(tdefect, defect(subset))
     return tdefect
-
-
-# Deprecated
-def subsetsum(sum, rectlist):
-    nlist = []
-    rectsize = len(rectlist)
-    for i in range(rectsize):
-        area = rectlist[i][0] * rectlist[i][1]
-        if area < sum:
-            rlist = subsetsum(sum - area, rectlist[i + 1:])
-            for a in rlist:
-                a.append([rectlist[i]])
-                nlist.append(a)
-        elif area == sum:
-            nlist.append([rectlist[i]])
-    return nlist
 
 
 def record_time(start=3, stop=10, quiet=False):
