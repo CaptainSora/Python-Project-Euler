@@ -97,14 +97,14 @@ def search_sum(size, bound=0, quiet=False):
         searchlist = [x for x in rect_list
                       if area(x) >= area(rect_list[-1]) - bound]
         # Check if range overlaps
-        if searchlist[0] != lower:
+        if area(searchlist[0]) != lower:
             # Search start index
             if not quiet:
                 print(f"Searching range {searchlist[0]} to {searchlist[-1]}")
             valid |= find_subset(size, searchlist)
             if size_list[-1] <= bound + 1:
                 break
-        lower = searchlist[0]
+        lower = area(searchlist[0])
         #size_list = [x for x in size_list if x < size_list[-1]]
         rect_list = rect_list[:-1]
     return valid
@@ -148,4 +148,4 @@ def record_time(start=3, stop=10, quiet=False):
         print(f"Finished searching sizes {start} through {stop}")
 
 #record_time(start=18, stop=18)
-search_sum(5)
+print(search_sum(5))
