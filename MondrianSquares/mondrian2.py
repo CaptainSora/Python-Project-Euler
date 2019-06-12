@@ -4,6 +4,7 @@ Problem.
 import math
 import time
 import heapq
+import json
 
 
 def area(rect):
@@ -24,7 +25,7 @@ def optimal(size):
 
 
 def create_rect_list(size, quiet=False, generator=True):
-    """Returns a generator or an array of rect objects for the size x size 
+    """Returns a generator or an array of rect objects for the size x size
     square. Faster than sorting.
     """
     # The upper bound for rectangle objects.
@@ -45,6 +46,7 @@ def create_rect_list(size, quiet=False, generator=True):
         return [x for x in rect_list]
 
 
+# ============================================================================
 def search_sum(size, bound=0, quiet=False, index=False):
     """Returns all possible arrangements of rects with valid area"""
     if bound == 0:  # See oeis.org/A276523
@@ -82,7 +84,7 @@ def search_sum(size, bound=0, quiet=False, index=False):
     solutionlist = []
     for i in range(len(rect_list)):
         if not quiet:
-            print(f"Searching tree {i + 1} of {len(rect_list)}")
+            print(f"Searching tree {i + 1} of {len(rect_list)}, n = {size}")
         a = area(rect_list[i])
         rlist = subsetsum(size * size - a, i + 1, a)
         for r in rlist:
@@ -122,4 +124,45 @@ def find_duplicates(size):
         indexlist.append(templist)
     print(indexlist)
 
-count_time(15)
+
+def defect(rectlist):
+    """Returns the defect of a rectlist."""
+    arealist = [area(x) for x in rectlist]
+    return max(arealist) - min(arealist)
+
+
+def write_part_1(size, stop=0, improve=True, quiet=False):
+    """Solves part 1 of the Mondrian Squares problem and saves the results to
+    file.
+
+    size: the side length of the square
+    improve: whether to search only for current best or better solutions
+    """
+    if stop == 0:
+        stop = size + 1
+    for n in range(size, stop):
+        bound = 0
+        if improve:
+            bound = optimal(n)
+        else:
+            resp = input("Are you sure you want suboptimal values?? [Y/N]")
+            if resp != "Y" and resp != "y":
+                print("Aborted.")
+                return None
+        solutionlist = search_sum(n, bound, quiet)
+        solutiondict = {}
+        for a in solutionlist:
+            d = defect(a)
+            if d < bound:
+                # print(f"Found smaller defect in size {n}!")
+                pass
+            if str(d) not in solutiondict:
+                solutiondict[str(d)] = []
+            solutiondict[str(d)].append(a)
+        f = open(f"MondrianSquares/Part1/length{n}.json", "w+")
+        f.write(json.dumps(solutiondict))
+        f.close()
+        if not quiet:
+            print("Saved to file.")
+
+write_part_1(25, stop=35)

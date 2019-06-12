@@ -105,7 +105,6 @@ def search_sum(size, bound=0, quiet=False):
             if size_list[-1] <= bound + 1:
                 break
         lower = area(searchlist[0])
-        #size_list = [x for x in size_list if x < size_list[-1]]
         rect_list = rect_list[:-1]
     return valid
 # ========================================================================== #
@@ -147,5 +146,4 @@ def record_time(start=3, stop=10, quiet=False):
     if not quiet:
         print(f"Finished searching sizes {start} through {stop}")
 
-#record_time(start=18, stop=18)
 print(search_sum(5))
