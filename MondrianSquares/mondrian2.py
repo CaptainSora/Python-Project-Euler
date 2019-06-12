@@ -159,10 +159,28 @@ def write_part_1(size, stop=0, improve=True, quiet=False):
             if str(d) not in solutiondict:
                 solutiondict[str(d)] = []
             solutiondict[str(d)].append(a)
-        f = open(f"MondrianSquares/Part1/length{n}.json", "w+")
+        f = open(f"MondrianSquares/Part1/length{n:03}.json", "w+")
         f.write(json.dumps(solutiondict))
         f.close()
         if not quiet:
             print("Saved to file.")
 
-write_part_1(25, stop=35)
+
+# ============ THE REAL PART 2 ===============================================
+def find_tiling(rectlist):
+    pass
+
+
+def search_tiling(size):
+    f = open(f"MondrianSquares/Part1/length{size:03}", 'r')
+    solutiondict = json.load(f)
+    f.close()
+    keylist = [x for x in solutiondict]
+    keylist.sort()
+
+    for a in keylist:
+        solutionlist = solutiondict[a]
+        for b in solutionlist:
+            if find_tiling(b):
+                print("Eureka!")
+

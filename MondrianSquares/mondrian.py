@@ -145,5 +145,3 @@ def record_time(start=3, stop=10, quiet=False):
         f.close()
     if not quiet:
         print(f"Finished searching sizes {start} through {stop}")
-
-print(search_sum(5))
