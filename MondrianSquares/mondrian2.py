@@ -11,6 +11,18 @@ def area(rect):
     return rect[0] * rect[1]
 
 
+def optimal(size):
+    """Returns a(n) for 3 <= n <= 57 where a(n) is the optimal tiling of the
+    Mondrian Art Puzzle.
+    """
+    OEIS = [
+        0, 0, 0, 2, 4, 4, 5, 5, 6, 6, 8, 6, 7, 8, 6, 8, 8, 8, 8, 8, 9, 9, 9,
+        8, 9, 10, 9, 10, 9, 9, 11, 11, 10, 12, 12, 11, 12, 11, 10, 11, 12, 13,
+        12, 12, 12, 13, 13, 12, 14, 12, 13, 14, 13, 14, 15, 14, 14, 15
+    ]
+    return OEIS[size]
+
+
 def create_rect_list(size, quiet=False, generator=True):
     """Returns a generator or an array of rect objects for the size x size 
     square. Faster than sorting.
