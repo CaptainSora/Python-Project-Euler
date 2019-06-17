@@ -7,6 +7,7 @@ import heapq
 import json
 
 
+# ===== UTILITY FUNCTIONS ====================================================
 def area(rect):
     """Calculates the area of a rectangle."""
     return rect[0] * rect[1]
@@ -24,6 +25,13 @@ def optimal(size):
     return OEIS[size]
 
 
+def defect(rectlist):
+    """Returns the defect of a rectlist."""
+    arealist = [area(x) for x in rectlist]
+    return max(arealist) - min(arealist)
+
+
+# ===== PART 1 ===============================================================
 def create_rect_list(size, quiet=False, generator=True):
     """Returns a generator or an array of rect objects for the size x size
     square. Faster than sorting.
@@ -46,7 +54,6 @@ def create_rect_list(size, quiet=False, generator=True):
         return [x for x in rect_list]
 
 
-# ============================================================================
 def search_sum(size, bound=0, quiet=False, index=False):
     """Returns all possible arrangements of rects with valid area"""
     if bound == 0:  # See oeis.org/A276523
@@ -125,12 +132,6 @@ def find_duplicates(size):
     print(indexlist)
 
 
-def defect(rectlist):
-    """Returns the defect of a rectlist."""
-    arealist = [area(x) for x in rectlist]
-    return max(arealist) - min(arealist)
-
-
 def write_part_1(size, stop=0, improve=True, quiet=False):
     """Solves part 1 of the Mondrian Squares problem and saves the results to
     file.
@@ -159,28 +160,84 @@ def write_part_1(size, stop=0, improve=True, quiet=False):
             if str(d) not in solutiondict:
                 solutiondict[str(d)] = []
             solutiondict[str(d)].append(a)
-        f = open(f"MondrianSquares/Part1/length{n:03}.json", "w+")
-        f.write(json.dumps(solutiondict))
-        f.close()
+        with open(f"MondrianSquares/Part1/length{n:03}.json", "w") as f:
+            f.write(json.dumps(solutiondict))
         if not quiet:
             print("Saved to file.")
 
 
-# ============ THE REAL PART 2 ===============================================
-def find_tiling(rectlist):
-    pass
+# ===== PART 2 ===============================================================
+def is_tiled(square):
+    for a in square:
+        if a != 0:
+            return False
+    return True
 
 
-def search_tiling(size):
-    f = open(f"MondrianSquares/Part1/length{size:03}", 'r')
-    solutiondict = json.load(f)
-    f.close()
+def add_tile(square, rect):
+    # assert(!is_tiled(square))
+    i = 0
+    while square[i] == 0:
+        i += 1
+    sqcopy = square[:]
+    for a in range(rect[0]):
+        if i + a >= len(sqcopy) or sqcopy[i + a] < rect[1]:
+            return False
+        sqcopy[i + a] -= rect[1]
+    square[:] = sqcopy[:]   # This does a proper rewrite
+    return True
+
+
+def search_tiling(size, rectlist, square, tilelist):
+    for r in rectlist:
+        rlcopy = rectlist[:]
+        rlcopy.remove(r)
+        sqcopy = square[:]
+        if add_tile(sqcopy, r):
+            if search_tiling(size, rlcopy, sqcopy, tilelist + [r]):
+                return True
+        sqcopy = square[:]
+        if r[0] != r[1] and add_tile(sqcopy, (r[1], r[0])):
+            if search_tiling(size, rlcopy, sqcopy, tilelist + [[r[1], r[0]]]):
+                return True
+    if is_tiled(square):
+        sizedict = {str(defect(tilelist)): tilelist}
+        with open(f"MondrianSquares/Part2/length{size:03}.json", 'w') as f:
+            f.write(json.dumps(sizedict))
+        return True
+    return False
+
+
+def find_tiling(size, quiet=False):
+    with open(f"MondrianSquares/Part1/length{size:03}.json", 'r') as f:
+        solutiondict = json.load(f)
     keylist = [x for x in solutiondict]
     keylist.sort()
 
     for a in keylist:
         solutionlist = solutiondict[a]
         for b in solutionlist:
-            if find_tiling(b):
-                print("Eureka!")
+            if search_tiling(size, b, [size] * size, []) and not quiet:
+                print(f"Eureka! Size {size}")
+                return
 
+
+def write_part_2(size, stop=0, quiet=False):
+    if stop == 0:
+        stop = size + 1
+    for n in range(size, stop):
+        find_tiling(n, quiet)
+
+
+def check_optimal(size, stop=0):
+    if stop == 0:
+        stop = size + 1
+    for n in range(size, stop):
+        with open(f"MondrianSquares/Part2/length{n:03}.json", 'r') as f:
+            solutiondict = json.load(f)
+        for a in solutiondict:
+            if int(a) != optimal(n):
+                print(f"Size {n} is suboptimal.")
+    print("Optimality checking complete.")
+
+write_part_2(12, 15)
