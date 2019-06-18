@@ -88,6 +88,27 @@ def search_sum(size, bound=0, quiet=False, index=False):
                     subset.append([rect_list[i + start]])
         return subset
 
+    def prune(rlist):
+        """Returns false if the rectlist is not theoretically tileable."""
+        def finish_row(sum, rlist):
+            for a in range(len(rlist)):
+                templist = rlist[:a] + rlist[a+1:]
+                if sum == rlist[a][0] or sum == rlist[a][1]:
+                    return True
+                else:
+                    if sum > rlist[a][0]:
+                        if finish_row(sum - rlist[a][0], templist):
+                            return True
+                    if sum > rlist[a][1]:
+                        if finish_row(sum - rlist[a][1], templist):
+                            return True
+
+        for a in range(len(rlist)):
+            # Find if there exist a subset of the other rects which can
+            #   tile with this rect.
+            templist = rlist[:a] + rlist[a+1:]
+            if prune(sum - rlist[a][0], templist)
+
     solutionlist = []
     for i in range(len(rect_list)):
         if not quiet:
@@ -137,14 +158,14 @@ def write_part_1(size, stop=0, improve=True, quiet=False):
     file.
 
     size: the side length of the square
-    improve: whether to search only for current best or better solutions
+    improve: whether to search only for better than current best solutions
     """
     if stop == 0:
         stop = size + 1
     for n in range(size, stop):
         bound = 0
         if improve:
-            bound = optimal(n)
+            bound = optimal(n) - 1
         else:
             resp = input("Are you sure you want suboptimal values?? [Y/N]")
             if resp != "Y" and resp != "y":
@@ -190,15 +211,19 @@ def add_tile(square, rect):
 
 def search_tiling(size, rectlist, square, tilelist):
     for r in rectlist:
+        if not tilelist:
+            print(f"Tile {rectlist.index(r)+1} of {len(rectlist)}")
         rlcopy = rectlist[:]
         rlcopy.remove(r)
         sqcopy = square[:]
         if add_tile(sqcopy, r):
-            if search_tiling(size, rlcopy, sqcopy, tilelist + [r]):
+            if rlcopy and search_tiling(size, rlcopy, sqcopy, tilelist + [r]):
                 return True
         sqcopy = square[:]
         if r[0] != r[1] and add_tile(sqcopy, (r[1], r[0])):
-            if search_tiling(size, rlcopy, sqcopy, tilelist + [[r[1], r[0]]]):
+            if rlcopy and search_tiling(
+                size, rlcopy, sqcopy, tilelist + [[r[1], r[0]]]
+            ):
                 return True
     if is_tiled(square):
         d = defect(tilelist)
@@ -210,32 +235,39 @@ def search_tiling(size, rectlist, square, tilelist):
         elif d == optimal(size):
             print(f"Optimal confirmed for size {size}.")
         else:
-            print(f"Found suboptimal for suze {size}. Search again?")
+            print(f"Found suboptimal for size {size}. Search again?")
         return True
     return False
 
 
-def find_tiling(size, quiet=False):
+def find_tiling(size, quiet=False, improve=False):
     with open(f"MondrianSquares/Part1/length{size:03}.json", 'r') as f:
         solutiondict = json.load(f)
     keylist = [x for x in solutiondict]
     keylist.sort()
 
     for a in keylist:
+        if improve and int(a) >= optimal(size):
+            print("Finished searching superoptimal values.")
+            break
         solutionlist = solutiondict[a]
+        if not quiet:
+            print(f"Searching defect {a}")
         for b in solutionlist:
+            if not quiet:
+                print(f"Depth {solutionlist.index(b)} of {len(solutionlist)}")
             if search_tiling(size, b, [size] * size, []) and not quiet:
                 print(f"Eureka! Size {size}")
                 return
 
 
-def write_part_2(size, stop=0, quiet=False):
+def write_part_2(size, stop=0, quiet=False, improve=False):
     if stop == 0:
         stop = size + 1
     for n in range(size, stop):
         if not quiet:
             print(f"Checking size {n}")
-        find_tiling(n, quiet)
+        find_tiling(n, quiet, improve)
 
 
 def check_optimal(size, stop=0):
@@ -249,4 +281,4 @@ def check_optimal(size, stop=0):
                 print(f"Size {n} is suboptimal.")
     print("Optimality checking complete.")
 
-write_part_2(22)
+write_part_2(24, improve=True)
