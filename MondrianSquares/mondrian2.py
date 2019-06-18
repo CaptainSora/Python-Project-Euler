@@ -201,9 +201,16 @@ def search_tiling(size, rectlist, square, tilelist):
             if search_tiling(size, rlcopy, sqcopy, tilelist + [[r[1], r[0]]]):
                 return True
     if is_tiled(square):
-        sizedict = {str(defect(tilelist)): tilelist}
+        d = defect(tilelist)
+        sizedict = {str(d): tilelist}
         with open(f"MondrianSquares/Part2/length{size:03}.json", 'w') as f:
             f.write(json.dumps(sizedict))
+        if d < optimal(size):
+            print(f"Found a new optimal for size {size}!?")
+        elif d == optimal(size):
+            print(f"Optimal confirmed for size {size}.")
+        else:
+            print(f"Found suboptimal for suze {size}. Search again?")
         return True
     return False
 
@@ -226,6 +233,8 @@ def write_part_2(size, stop=0, quiet=False):
     if stop == 0:
         stop = size + 1
     for n in range(size, stop):
+        if not quiet:
+            print(f"Checking size {n}")
         find_tiling(n, quiet)
 
 
@@ -240,4 +249,4 @@ def check_optimal(size, stop=0):
                 print(f"Size {n} is suboptimal.")
     print("Optimality checking complete.")
 
-write_part_2(12, 15)
+write_part_2(22)

@@ -1,1 +1,3 @@
-print([3, 4] + 3)
+x = []
+if not x:
+    print("yes")
