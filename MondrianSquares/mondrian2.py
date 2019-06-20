@@ -92,22 +92,27 @@ def search_sum(size, bound=0, quiet=False, index=False):
         """Returns false if the rectlist is not theoretically tileable."""
         def finish_row(sum, rlist):
             for a in range(len(rlist)):
-                templist = rlist[:a] + rlist[a+1:]
                 if sum == rlist[a][0] or sum == rlist[a][1]:
                     return True
                 else:
+                    templist = rlist[:a] + rlist[a+1:]
                     if sum > rlist[a][0]:
                         if finish_row(sum - rlist[a][0], templist):
                             return True
                     if sum > rlist[a][1]:
                         if finish_row(sum - rlist[a][1], templist):
                             return True
+            return False
 
         for a in range(len(rlist)):
             # Find if there exist a subset of the other rects which can
             #   tile with this rect.
             templist = rlist[:a] + rlist[a+1:]
-            if prune(sum - rlist[a][0], templist)
+            if not finish_row(size - rlist[a][0], templist):
+                return False
+            if not finish_row(size - rlist[a][1], templist):
+                return False
+        return True
 
     solutionlist = []
     for i in range(len(rect_list)):
@@ -120,7 +125,8 @@ def search_sum(size, bound=0, quiet=False, index=False):
                 r.append(i)
             else:
                 r.append(rect_list[i])
-        solutionlist.extend(rlist)
+            if prune(r):
+                solutionlist.append(r)
 
     if not quiet:
         print(f"Found {len(solutionlist)} possible solutions")
@@ -261,7 +267,7 @@ def find_tiling(size, quiet=False, improve=False):
                 return
 
 
-def write_part_2(size, stop=0, quiet=False, improve=False):
+def write_part_2(size, stop=0, improve=False, quiet=False):
     if stop == 0:
         stop = size + 1
     for n in range(size, stop):
@@ -281,4 +287,14 @@ def check_optimal(size, stop=0):
                 print(f"Size {n} is suboptimal.")
     print("Optimality checking complete.")
 
-write_part_2(24, improve=True)
+
+def auto(size, stop=0, improve=True, quiet=True):
+    if stop == 0:
+        stop = size + 1
+    for n in range(size, stop):
+        write_part_1(n, improve, quiet)
+        write_part_2(n, improve, quiet)
+
+
+write_part_2(3, stop=33)
+# write_part_1(30, stop=35, quiet=True)
