@@ -296,5 +296,5 @@ def auto(size, stop=0, improve=True, quiet=True):
         write_part_2(n, improve, quiet)
 
 
-write_part_2(3, stop=33)
-# write_part_1(30, stop=35, quiet=True)
+# write_part_2(33)
+write_part_1(40, stop=50)
