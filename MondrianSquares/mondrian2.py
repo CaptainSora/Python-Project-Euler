@@ -115,6 +115,7 @@ def search_sum(size, bound=0, quiet=False, index=False):
         return True
 
     solutionlist = []
+    start = time.time()
     for i in range(len(rect_list)):
         if not quiet:
             print(f"Searching tree {i + 1} of {len(rect_list)}, n = {size}")
@@ -127,9 +128,22 @@ def search_sum(size, bound=0, quiet=False, index=False):
                 r.append(rect_list[i])
             if prune(r):
                 solutionlist.append(r)
+        if not quiet:
+            avgtime = (time.time() - start) / (i + 1)
+            tleft = avgtime * (len(rect_list) - i - 1)
+            esttime = time.strftime(
+                '%H:%M',
+                time.localtime(tleft + time.time())
+            )
+            print(
+                f"Currently {time.strftime('%H:%M', time.localtime())}" +
+                f" / Time left: {tleft:.3f}s / ETA: {esttime}"
+            )
 
     if not quiet:
+        totaltime = time.strftime('%H:%M', time.gmtime(time.time() - start))
         print(f"Found {len(solutionlist)} possible solutions")
+        print(f"Size {size} took {totaltime}.")
     return solutionlist
 
 
