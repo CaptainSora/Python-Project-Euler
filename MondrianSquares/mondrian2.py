@@ -95,7 +95,7 @@ def search_sum(size, bound=0, quiet=False, index=False):
                 if sum == rlist[a][0] or sum == rlist[a][1]:
                     return True
                 else:
-                    templist = rlist[:a] + rlist[a+1:]
+                    templist = rlist[:a] + rlist[a + 1:]
                     if sum > rlist[a][0]:
                         if finish_row(sum - rlist[a][0], templist):
                             return True
@@ -107,7 +107,7 @@ def search_sum(size, bound=0, quiet=False, index=False):
         for a in range(len(rlist)):
             # Find if there exist a subset of the other rects which can
             #   tile with this rect.
-            templist = rlist[:a] + rlist[a+1:]
+            templist = rlist[:a] + rlist[a + 1:]
             if not finish_row(size - rlist[a][0], templist):
                 return False
             if not finish_row(size - rlist[a][1], templist):
@@ -115,6 +115,7 @@ def search_sum(size, bound=0, quiet=False, index=False):
         return True
 
     solutionlist = []
+    start = time.time()
     for i in range(len(rect_list)):
         if not quiet:
             print(f"Searching tree {i + 1} of {len(rect_list)}, n = {size}")
@@ -127,9 +128,22 @@ def search_sum(size, bound=0, quiet=False, index=False):
                 r.append(rect_list[i])
             if prune(r):
                 solutionlist.append(r)
+        if not quiet:
+            avgtime = (time.time() - start) / (i + 1)
+            tleft = avgtime * (len(rect_list) - i - 1)
+            esttime = time.strftime(
+                '%H:%M',
+                time.localtime(tleft + time.time())
+            )
+            print(
+                f"Currently {time.strftime('%H:%M', time.localtime())}" +
+                f" / Time left: {tleft:.3f}s / ETA: {esttime}"
+            )
 
     if not quiet:
+        totaltime = time.strftime('%H:%M', time.gmtime(time.time() - start))
         print(f"Found {len(solutionlist)} possible solutions")
+        print(f"Size {size} took {totaltime}.")
     return solutionlist
 
 
@@ -295,6 +309,6 @@ def auto(size, stop=0, improve=True, quiet=True):
         write_part_1(n, improve, quiet)
         write_part_2(n, improve, quiet)
 
-write_part_2(31)
-# write_part_1(33)
-# count_time(15, quiet=True, iterations=10)
+
+write_part_2(33)
+# write_part_1(40, stop=50)
