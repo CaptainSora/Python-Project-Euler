@@ -133,15 +133,18 @@ def search_sum(size, bound=0, quiet=False, index=False):
     return solutionlist
 
 
-def count_time(value, quiet=False):
+def count_time(value, quiet=False, iterations=1):
     """Returns the running times of start through stop inclusive."""
     if not quiet:
         print("Searching size", value)
-    timestart = time.perf_counter()
-    search_sum(value, quiet)
-    duration = round(time.perf_counter() - timestart, 3)
-    if not quiet:
-        print(f"Size {value} takes {duration} s.")
+    duration = 0
+    for _ in range(iterations):
+        timestart = time.perf_counter()
+        search_sum(value, optimal(value), quiet)
+        duration += round(time.perf_counter() - timestart, 3)
+    duration /= iterations
+    duration = round(duration, 3)
+    print(f"Size {value} takes {duration} s over {iterations} iterations.")
     return duration
 
 
@@ -181,9 +184,6 @@ def write_part_1(size, stop=0, improve=True, quiet=False):
         solutiondict = {}
         for a in solutionlist:
             d = defect(a)
-            if d < bound:
-                # print(f"Found smaller defect in size {n}!")
-                pass
             if str(d) not in solutiondict:
                 solutiondict[str(d)] = []
             solutiondict[str(d)].append(a)
@@ -295,6 +295,6 @@ def auto(size, stop=0, improve=True, quiet=True):
         write_part_1(n, improve, quiet)
         write_part_2(n, improve, quiet)
 
-
-write_part_2(3, stop=33)
-# write_part_1(30, stop=35, quiet=True)
+write_part_2(31)
+# write_part_1(33)
+# count_time(15, quiet=True, iterations=10)
