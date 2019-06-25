@@ -260,11 +260,20 @@ def search_tiling(size, rectlist, square, tilelist):
     return False
 
 
-def find_tiling(size, quiet=False, improve=False):
+def find_tiling(size, quiet=False, improve=False, manual=False):
     with open(f"MondrianSquares/Part1/length{size:03}.json", 'r') as f:
         solutiondict = json.load(f)
     keylist = [x for x in solutiondict]
     keylist.sort()
+    if manual:
+        while True:
+            response = input(f"Would you like to skip defect {keylist[0]}? Y/N")
+            if response == "Y":
+                keylist = keylist[1:]
+            elif response == "N":
+                break
+            else:
+                print("Invalid input")
 
     for a in keylist:
         if improve and int(a) >= optimal(size):
@@ -281,13 +290,13 @@ def find_tiling(size, quiet=False, improve=False):
                 return
 
 
-def write_part_2(size, stop=0, improve=False, quiet=False):
+def write_part_2(size, stop=0, improve=False, quiet=False, manual=False):
     if stop == 0:
         stop = size + 1
     for n in range(size, stop):
         if not quiet:
             print(f"Checking size {n}")
-        find_tiling(n, quiet, improve)
+        find_tiling(n, quiet, improve, manual)
 
 
 def check_optimal(size, stop=0):
@@ -310,5 +319,11 @@ def auto(size, stop=0, improve=True, quiet=True):
         write_part_2(n, improve, quiet)
 
 
-write_part_2(33)
+write_part_2(33, manual=True)
 # write_part_1(40, stop=50)
+
+"""
+Current status
+Part 1: n=33, d=10 finished
+Part 2: n=45 running on home machine
+"""
