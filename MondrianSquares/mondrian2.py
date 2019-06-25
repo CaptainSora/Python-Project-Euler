@@ -267,7 +267,7 @@ def find_tiling(size, quiet=False, improve=False, manual=False):
     keylist.sort()
     if manual:
         while True:
-            response = input(f"Would you like to skip defect {keylist[0]}? Y/N")
+            response = input(f"Would you like to skip d={keylist[0]}? Y/N ")
             if response == "Y":
                 keylist = keylist[1:]
             elif response == "N":
