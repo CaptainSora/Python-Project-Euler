@@ -31,6 +31,18 @@ def defect(rectlist):
     return max(arealist) - min(arealist)
 
 
+def simp_time(time_in_s):
+    """Returns a string of the duration given the time in seconds."""
+    if time_in_s < 60:
+        return f"{time_in_s:.1f}s"
+    elif time_in_s < 3600:
+        return f"{time_in_s/60:.1f}m"
+    elif time_in_s < 86400:
+        return f"{time_in_s/3600:.1f}h"
+    else:
+        return f"{time_in_s//86400}d {time_in_s%86400:.1f}h"
+
+
 # ===== PART 1 ===============================================================
 def create_rect_list(size, quiet=False, generator=True):
     """Returns a generator or an array of rect objects for the size x size
@@ -137,7 +149,7 @@ def search_sum(size, bound=0, quiet=False, index=False):
             )
             print(
                 f"Currently {time.strftime('%H:%M', time.localtime())}" +
-                f" / Time left: {tleft:.3f}s / ETA: {esttime}"
+                f" / Time left: {simp_time(tleft)} / ETA: {esttime}"
             )
 
     if not quiet:
@@ -320,7 +332,7 @@ def auto(size, stop=0, improve=True, quiet=True):
 
 
 write_part_2(33, manual=True)
-# write_part_1(40, stop=50)
+# write_part_1(45, stop=50)
 
 """
 Current status
