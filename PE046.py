@@ -1,14 +1,12 @@
-import json
+from Miller_Primality import is_prime
 
-f = open('sieve.txt', 'r')
-
-primes = json.load(f)
 
 def generate(prev):
     prev += 2
-    while (prev in primes):
+    while not is_prime(prev):
         prev += 2
     return prev
+
 
 def goldbach(candidate):
     while True:
@@ -16,9 +14,9 @@ def goldbach(candidate):
         index = 0
         while candidate > primes[index]:
             square = 1
-            while candidate > primes[index] + 2 * square * square:
+            while candidate > primes[index] + 2 * square**2:
                 square += 1
-            if candidate == primes[index] + 2 * square * square:
+            if candidate == primes[index] + 2 * square**2:
                 test = True
                 break
             index += 1
@@ -29,4 +27,6 @@ def goldbach(candidate):
             print("%d is a counterexample!" % candidate)
             break
 
-goldbach(9)
+
+def solve():
+    return goldbach(9)

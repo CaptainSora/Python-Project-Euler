@@ -1,5 +1,6 @@
 from pandigital import generate
 
+
 def substring_div():
     primes = [2, 3, 5, 7, 11, 13, 17]
     sum = 0
@@ -14,6 +15,8 @@ def substring_div():
             sum += a
             print(a)
     print("sum is %d" % sum)
+    return sum
 
-substring_div()
 
+def solve():
+    return substring_div()

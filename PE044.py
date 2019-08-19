@@ -1,32 +1,22 @@
-
-pentagonal = [1]
-pent_len = 1
-
-def next():
-    global pentagonal, pent_len
-    pent_len += 1
-    pentagonal.append(pent_len * (3 * pent_len - 1) / 2)
-
 def min_diff():
-    global pentagonal
-    next()
+    pent = [1, 5]
     index = 1
     min_diff = 0
     while True:
         for a in range(index):
-            summ = pentagonal[index] + pentagonal[a]
-            diff = pentagonal[index] - pentagonal[a]
-            while (summ > pentagonal[-1]) :
-                next()
-            if summ in pentagonal and diff in pentagonal:
+            summ = pent[index] + pent[a]
+            diff = pent[index] - pent[a]
+            while (summ > pent[-1]):
+                pent.append(int(len(pent) * (3 * len(pent) - 1) / 2))
+            if summ in pent and diff in pent:
                 if diff < min_diff or min_diff == 0:
                     min_diff = diff
-        req_diff = pentagonal[index + 1] - pentagonal[index]
-        if 0 < min_diff: # technically should also brute force verify that min_diff < req_diff
-            break
-        else:
-            print("Tested %d min_diff %d required %d" % (pentagonal[index], min_diff, req_diff))
-            index += 1
-    print("D is %d" % min_diff)
+        # req_diff = pent[index + 1] - pent[index]
+        if 0 < min_diff:
+            print("D is %d" % min_diff)
+            return min_diff
+        index += 1
 
-min_diff()
+
+def solve():
+    return min_diff()

@@ -6,6 +6,7 @@ f.close()
 
 triangle = [1]
 
+
 def is_triangular(num):
     global triangle
     tri_len = len(triangle)
@@ -16,11 +17,13 @@ def is_triangular(num):
         return True
     return False
 
+
 def to_num(word):
     value = 0
     for char in word:
         value += ord(char) - ord("A") + 1
     return value
+
 
 def count_triangular(wordlist):
     count = 0
@@ -28,5 +31,8 @@ def count_triangular(wordlist):
         if (is_triangular(to_num(word.strip('"')))):
             count += 1
     print(count)
+    return count
 
-count_triangular(words.split(','))
+
+def solve():
+    return count_triangular(words.split(','))
