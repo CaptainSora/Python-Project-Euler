@@ -1,4 +1,4 @@
-def min_diff():
+def min_diff(vol=0):
     pent = [1, 5]
     index = 1
     min_diff = 0
@@ -13,10 +13,11 @@ def min_diff():
                     min_diff = diff
         # req_diff = pent[index + 1] - pent[index]
         if 0 < min_diff:
-            print("D is %d" % min_diff)
+            if vol >= 1:
+                print("D is %d" % min_diff)
             return min_diff
         index += 1
 
 
-def solve():
-    return min_diff()
+def solve(vol=0):
+    return min_diff(vol=vol)

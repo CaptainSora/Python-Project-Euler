@@ -1,18 +1,7 @@
-f = open("p042_words.txt", "r")
-
-words = f.read()
-
-f.close()
-
-triangle = [1]
-
-
 def is_triangular(num):
-    global triangle
-    tri_len = len(triangle)
-    while num > triangle[-1]:
-        triangle.append(0.5 * (tri_len + 1) * (tri_len + 2))
-        tri_len += 1
+    tri = [1]
+    while num > tri[-1]:
+        triangle.append(0.5 * (len(tri) + 1) * (len(tri) + 2))
     if num in triangle:
         return True
     return False
@@ -25,14 +14,18 @@ def to_num(word):
     return value
 
 
-def count_triangular(wordlist):
+def count_triangular():
+    f = open("p042_words.txt", "r")
+    words = f.read()
+    f.close()
+    wordlist = words.split(',')
+
     count = 0
     for word in wordlist:
         if (is_triangular(to_num(word.strip('"')))):
             count += 1
-    print(count)
     return count
 
 
-def solve():
-    return count_triangular(words.split(','))
+def solve(vol=0):
+    return count_triangular()

@@ -21,12 +21,14 @@ def goldbach(candidate):
                 break
             index += 1
         if test:
-            print("%d failed" % candidate)
+            if vol >= 3:
+                print("%d failed" % candidate)
             candidate = generate(candidate)
         else:
-            print("%d is a counterexample!" % candidate)
+            if vol >= 1:
+                print("%d is a counterexample!" % candidate)
             break
 
 
-def solve():
-    return goldbach(9)
+def solve(vol=0):
+    return goldbach(9, vol=vol)

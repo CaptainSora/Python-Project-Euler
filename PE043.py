@@ -1,7 +1,7 @@
-from pandigital import generate
+from _pandigital_tools import generate
 
 
-def substring_div():
+def substring_div(vol=0):
     primes = [2, 3, 5, 7, 11, 13, 17]
     sum = 0
     pandigital = generate(0, 9)
@@ -13,10 +13,12 @@ def substring_div():
                 break
         if property:
             sum += a
-            print(a)
-    print("sum is %d" % sum)
+            if vol >= 2:
+                print(a)
+    if vol >= 1:
+        print("sum is %d" % sum)
     return sum
 
 
-def solve():
-    return substring_div()
+def solve(vol=0):
+    return substring_div(vol=vol)

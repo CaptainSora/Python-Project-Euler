@@ -1,7 +1,7 @@
 """This module contains prime-testing functions."""
-import json
-import math
+from itertools import compress
 
+# Required for the Miller-Rabin Primality Test
 smallprimes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
 ceilings = [
     2047,
@@ -19,24 +19,17 @@ ceilings = [
     3317044064679887385961981
 ]
 
-f = open('sieve-100m.txt', 'r')
-primes = set(json.load(f))
-f.close()
-
 
 def is_prime(n):
-    """Tests if a number is prime using the Miller Primality Test.
+    """Tests if a number is prime using the Miller-Rabin Primality Test.
 
     n: works up to 3.31 x 10 ^ 24
     """
-    # Quick trial division
-    if n < 10 ** 8:
-        if n in primes:
-            return True
-        return False
-    print("Large number testing: %d" % n)
     # Size verification
-    if n >= ceilings[-1]:
+    if n <= 1:
+        print("Requires n >= 2.")
+        return False
+    elif n >= ceilings[-1]:
         print("Too big! Test failed.")
         return False
     # Prime testing setup
@@ -63,3 +56,14 @@ def is_prime(n):
         return False
     # Prime
     return True
+
+
+def sieve(size):
+    """
+    Returns a list of all primes up to size.
+    """
+    is_prime = [True] * (size)
+    for i in range(2, size):
+        if is_prime[i]:
+            is_prime[i*i::i] = [False] * len(is_prime[i*i::i])
+    return list(compress(range(size), is_prime))[2:]

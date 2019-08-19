@@ -1,21 +1,22 @@
-import itertools
-from primalitytest import is_prime
-from pandigital import generate
+from _prime_tools import is_prime
+from _pandigital_tools import generate
 
 
-def largest_pandigital_prime():
+def largest_pandigital_prime(vol=0):
     largest = 0
     for setlen in range(9, 0, -1):
         if largest > 0:
             break
-        print(f"Testing subsets of length {setlen}")
+        if vol >= 2:
+            print(f"Testing subsets of length {setlen}")
         newx = generate(1, setlen)
         for c in newx:
             if c > largest and is_prime(c):
                 largest = c
-    print(f"The largest answer is {largest}")
+    if vol >= 1:
+        print(f"The largest answer is {largest}")
     return largest
 
 
-def solve():
-    return largest_pandigital_prime()
+def solve(vol=0):
+    return largest_pandigital_prime(vol=vol)

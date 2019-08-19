@@ -15,5 +15,5 @@ def in_all(min_val):
         tri.append(int(len(tri) * (len(tri) + 1) / 2))
 
 
-def solve():
+def solve(vol=0):
     return in_all(40755)
