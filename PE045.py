@@ -1,4 +1,4 @@
-def in_all(min_val):
+def in_all(min_val, vol=0):
     """
     Finds the first number greater than min_val which is triangular,
     pentagonal, and hexagonal.
@@ -26,4 +26,4 @@ def in_all(min_val):
 
 
 def solve(vol=0):
-    return in_all(40755)
+    return in_all(40755, vol=vol)

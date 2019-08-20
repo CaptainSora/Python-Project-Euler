@@ -34,9 +34,9 @@ def checksoln():
 
     for qnum in timedict:
         if timedict[qnum][1] >= threshold:
-            fail += qnum
+            fail += [qnum]
         elif timedict[qnum][1] >= threshold * 0.9:
-            close += qnum
+            close += [qnum]
 
     if fail:
         print("These files take too long:", fail)
@@ -51,4 +51,4 @@ def addmultsoln(start, stop, vol=0):
         addsoln(n, vol=vol)
     checksoln()
 
-addmultsoln(41, 49, vol=1)
+addmultsoln(44, 44)
