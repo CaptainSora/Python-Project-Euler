@@ -1,1 +1,38 @@
-{"PE041": {"solution": 7652413, "time": 1.7, "primesieve": false}, "PE042": {"solution": 162, "time": 0.0, "primesieve": false}, "PE043": {"solution": 16695334890, "time": 21.8, "primesieve": false}, "PE044": {"solution": 5482660, "time": 91.3, "primesieve": false}, "PE045": {"solution": null, "time": 18.5, "primesieve": false}}
+{
+    "PE041": [
+        7652413,
+        7.2
+    ],
+    "PE042": [
+        162,
+        0.1
+    ],
+    "PE043": [
+        16695334890,
+        23.8
+    ],
+    "PE044": [
+        5482660,
+        95.7
+    ],
+    "PE045": [
+        1533776805,
+        16.7
+    ],
+    "PE046": [
+        5777,
+        0.1
+    ],
+    "PE047": [
+        null,
+        3.8
+    ],
+    "PE048": [
+        9110846700,
+        0.1
+    ],
+    "PE049": [
+        null,
+        0.6
+    ]
+}

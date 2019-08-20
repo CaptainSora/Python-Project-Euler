@@ -1,4 +1,12 @@
 def min_diff(vol=0):
+    """
+    Calculates the minimum difference of any pair of pentagonal numbers whose
+    sum and differences are also pentagonal.
+    """
+    # Equivalent to finding the smallest a such that:
+    #   a, b, c, d are all pentagonal
+    #   a + b = c
+    #   b + c = d
     pent = [1, 5]
     index = 1
     min_diff = 0
@@ -11,7 +19,6 @@ def min_diff(vol=0):
             if summ in pent and diff in pent:
                 if diff < min_diff or min_diff == 0:
                     min_diff = diff
-        # req_diff = pent[index + 1] - pent[index]
         if 0 < min_diff:
             if vol >= 1:
                 print("D is %d" % min_diff)

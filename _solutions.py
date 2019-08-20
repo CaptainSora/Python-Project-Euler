@@ -33,9 +33,9 @@ def checksoln():
     close = []
 
     for qnum in timedict:
-        if timedict[qnum]["time"] >= threshold:
+        if timedict[qnum][1] >= threshold:
             fail += qnum
-        elif timedict[qnum]["time"] >= threshold * 0.9:
+        elif timedict[qnum][1] >= threshold * 0.9:
             close += qnum
 
     if fail:
@@ -44,3 +44,11 @@ def checksoln():
         print("These files may take too long:", close)
     if not fail and not close:
         print("All questions run within time constraints.")
+
+
+def addmultsoln(start, stop, vol=0):
+    for n in range(start, stop + 1):
+        addsoln(n, vol=vol)
+    checksoln()
+
+addmultsoln(41, 49, vol=1)

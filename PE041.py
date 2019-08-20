@@ -3,6 +3,9 @@ from _pandigital_tools import generate
 
 
 def largest_pandigital_prime(vol=0):
+    """
+    Returns the largest n-digital pandigital prime.
+    """
     largest = 0
     for setlen in range(9, 0, -1):
         if largest > 0:

@@ -1,5 +1,6 @@
 """This module contains prime-testing functions."""
 from itertools import compress
+from time import perf_counter
 
 # Required for the Miller-Rabin Primality Test
 smallprimes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
@@ -58,12 +59,24 @@ def is_prime(n):
     return True
 
 
-def sieve(size):
+def primegen():
+    yield 2
+    p = 3
+    while True:
+        while not is_prime(p):
+            p += 2
+        yield p
+        p += 2
+
+
+def sieve(size, floor=2):
     """
-    Returns a list of all primes up to size.
+    Returns a list of all primes up to and including size.
+
+    Optionally, excludes primes below floor.
     """
-    is_prime = [True] * (size)
+    is_prime = [True] * (size + 1)
     for i in range(2, size):
         if is_prime[i]:
             is_prime[i*i::i] = [False] * len(is_prime[i*i::i])
-    return list(compress(range(size), is_prime))[2:]
+    return [x for x in list(compress(range(size), is_prime)) if x >= floor]

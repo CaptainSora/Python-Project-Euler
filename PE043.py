@@ -2,6 +2,10 @@ from _pandigital_tools import generate
 
 
 def substring_div(vol=0):
+    """
+    Returns the sum of all 0-9 pandigital numbers with substring divisibility
+    as defined in the question.
+    """
     primes = [2, 3, 5, 7, 11, 13, 17]
     sum = 0
     pandigital = generate(0, 9)
