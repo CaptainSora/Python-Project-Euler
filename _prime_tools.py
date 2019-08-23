@@ -127,7 +127,10 @@ def prime_factors(num, mode="count"):
 
 
 def LCM(numlist):
-    numlist = [x for x in numlist if x > 1]
+    """
+    Returns the least common multiple of all natural numbers in numlist.
+    """
+    numlist = [int(x) for x in numlist if x > 1]
     LCMdict = {}
     for a in numlist:
         numdict = prime_factors(a, mode="dict")
