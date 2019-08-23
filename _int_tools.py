@@ -1,3 +1,8 @@
+"""
+This module contains functions related to integer formatting.
+"""
+
+
 def array_to_int(intarray):
     return int(''.join(intarray))
 

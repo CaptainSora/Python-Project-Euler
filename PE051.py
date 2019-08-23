@@ -1,11 +1,5 @@
-import json, itertools
+import itertools
 from int_tools import int_to_str_array
-
-f = open('sieve-1m.txt', 'r')
-
-primes = json.load(f)
-
-f.close()
 
 ### WARNING LONG PROGRAM
 

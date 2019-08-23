@@ -1,26 +1,4 @@
-from _prime_tools import sieve
-from math import sqrt
-
-
-def count_factors(num):
-    """
-    Returns a list of remainders of prime divisors for num
-
-    e.g. input 43, test with primes [2, 3, 5], output [1, 1, 3]
-    """
-    pf = 0
-    # Generate potential prime factors
-    ppf_list = sieve(int(sqrt(num)))
-    for x in ppf_list:
-        if num % x == 0:
-            pf += 1
-            while num % x == 0:
-                num /= x
-        if num == 1:
-            break
-    if num > 1:
-        pf += 1
-    return pf
+from _prime_tools import sieve, prime_factors
 
 
 def consecutive(length, dpf, vol=0):
@@ -30,18 +8,18 @@ def consecutive(length, dpf, vol=0):
     """
     cand = 3
     while True:
-        if count_factors(cand) == dpf:
+        if prime_factors(cand, mode="count") == dpf:
             len_so_far = 1
             lowest = cand
             # Count below
             temp_cand = cand - 1
-            while count_factors(temp_cand) == dpf:
+            while prime_factors(temp_cand, mode="count") == dpf:
                 len_so_far += 1
                 lowest = temp_cand
                 temp_cand -= 1
             # Count above
             temp_cand = cand + 1
-            while count_factors(temp_cand) == dpf:
+            while prime_factors(temp_cand, mode="count") == dpf:
                 len_so_far += 1
                 temp_cand += 1
             # Check sequence length

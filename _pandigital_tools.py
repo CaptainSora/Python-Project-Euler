@@ -1,3 +1,8 @@
+"""
+This module contains functions related in some way to pandigital numbers.
+"""
+
+
 import itertools
 
 

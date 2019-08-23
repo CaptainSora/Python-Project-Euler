@@ -1,10 +1,14 @@
-"""This module contains prime-testing functions."""
+"""
+This module contains functions related in some way to prime numbers.
+"""
+
 from itertools import compress
 from time import perf_counter
+from math import sqrt
 
 # Required for the Miller-Rabin Primality Test
-smallprimes = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
-ceilings = [
+SMALLPRIMES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
+CEILINGS = [
     2047,
     1373653,
     25326001,
@@ -30,20 +34,22 @@ def is_prime(n):
     if n <= 1:
         print("Requires n >= 2.")
         return False
-    elif n >= ceilings[-1]:
+    elif n <= SMALLPRIMES[-1]:
+        return n in SMALLPRIMES
+    elif n >= CEILINGS[-1]:
         print("Too big! Test failed.")
         return False
     # Prime testing setup
     index = 1
-    while n > ceilings[index - 1]:
+    while n > CEILINGS[index - 1]:
         index += 1
-    # Miller primality test with smallprimes[:index]
+    # Miller primality test with SMALLPRIMES[:index]
     d = n - 1
     r = 0
     while d % 2 == 0:
         d = int(d / 2)
         r += 1
-    for a in smallprimes[:index]:
+    for a in SMALLPRIMES[:index]:
         x = pow(a, d, n)
         if x == 1 or x == n - 1:
             continue
@@ -75,8 +81,62 @@ def sieve(size, floor=2):
 
     Optionally, excludes primes below floor.
     """
-    is_prime = [True] * (size + 1)
+    size += 1
+    is_prime = [True] * (size)
     for i in range(2, size):
         if is_prime[i]:
             is_prime[i*i::i] = [False] * len(is_prime[i*i::i])
     return [x for x in list(compress(range(size), is_prime)) if x >= floor]
+
+
+def prime_factors(num, mode="count"):
+    """
+    "count" : Returns the number of unique prime factors of num.
+    "max" : Returns the greatest prime factor of num.
+    "min" : Returns the smallest prime factor of num.
+    "list" : Returns a list of prime factors of num.
+
+    e.g. input 43, test with primes [2, 3, 5], remainder [1, 1, 3]
+    """
+    pfactors = {}
+    # Generate potential prime factors
+    ppf_list = sieve(int(sqrt(num)))
+    for x in ppf_list:
+        if num % x == 0:
+            pfactors[x] = 0
+            while num % x == 0:
+                pfactors[x] += 1
+                num /= x
+        if num == 1:
+            break
+    if num > 1:
+        pfactors[num] = 1
+    pflist = list(pfactors.keys())
+    pflist.sort()
+    # Output based on mode
+    if mode == "count":
+        return len(pflist)
+    elif mode == "max":
+        return pflist[-1]
+    elif mode == "min":
+        return pflist[0]
+    elif mode == "list":
+        return pflist
+    elif mode == "dict":
+        return pfactors
+
+
+def LCM(numlist):
+    numlist = [x for x in numlist if x > 1]
+    LCMdict = {}
+    for a in numlist:
+        numdict = prime_factors(a, mode="dict")
+        for b in numdict:
+            if b not in LCMdict:
+                LCMdict[b] = 0
+            LCMdict[b] = max(LCMdict[b], numdict[b])
+    # Remultiply to get result
+    product = 1
+    for c in LCMdict:
+        product *= c ** LCMdict[c]
+    return product
