@@ -60,4 +60,8 @@ def addmultsoln(start, stop, vol=0):
         addsoln(n, vol=vol)
     checksoln()
 
+<<<<<<< HEAD
 addmultsoln(41, 49)
+=======
+addmultsoln(41, 50)
+>>>>>>> 1f73ce644322ed2312c62ae9dddafa80ddb6f4fc

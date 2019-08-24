@@ -1,37 +1,32 @@
-import json
+from _prime_tools import sieve
 
-f = open('sieve-1m.txt', 'r')
 
-primes = json.load(f)
-
-f.close()
-
-def consecutive_prime_sum(ceiling):
-    # Requirement assertion
-    if (ceiling > 1000000):
-        print("Ceiling too high! Max value: 1 000 000")
-        return
-    
-    len_primes = len([x for x in primes if x < ceiling])
+def consecutive_prime_sum_v2(ceiling, vol=0):
+    """
+    Returns the prime below ceiling which is the sum of the most consecutive
+    primes.
+    """
+    primelist = sieve(ceiling)
     maxlen = 0
     primevalue = 0
 
-    for a in range(len_primes):
+    for a in range(len(primelist)):
         # Don't bother continuing if impossible to find longer consecutive sum
-        if len_primes - a < maxlen:
+        if len(primelist) - a < maxlen:
             break
-        # Start consecutive summation from primes[a]
-        for b in range(maxlen + 1, len_primes):
-            # Arry indexing assertion
-            if a + b >= len_primes:
-                # If true, primes[a+b] is greater than ceiling or invalid index
-                break
-            primesum = sum(primes[a:a+b])
+        # Start consecutive summation from primelist[a]
+        for b in range(maxlen + 1, len(primelist) - a):
+            # Array indexing assertion
+            primesum = sum(primelist[a:a+b+1])
             if primesum > ceiling:
                 break
-            if primesum in primes[:len_primes]:
+            elif primesum in primelist:
                 maxlen = b
                 primevalue = primesum
-    print("The prime is %d which is a sum of %d consecutive primes." % (primevalue, maxlen))
+    if vol >= 1:
+        print(f"{primevalue} is a sum of {maxlen} consecutive primes.")
+    return primevalue
 
-consecutive_prime_sum(1000000)
+
+def solve(vol=0):
+    return consecutive_prime_sum_v2(10**6, vol=vol)
