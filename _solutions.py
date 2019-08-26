@@ -4,6 +4,9 @@ import json
 
 
 def addsoln(qnum, vol=0):
+    """
+    Times and runs the question file, and adds the time and output to _solutions.json.
+    """
     # Time file execution
     start = perf_counter()
     filename = f"PE{qnum:03}"
@@ -25,6 +28,9 @@ def addsoln(qnum, vol=0):
 
 
 def checksoln():
+    """
+    Checks the runtimes of all question in _solutions.json.
+    """
     f = open('_solutions.json', 'r')
     timedict = json.load(f)
     f.close()
@@ -47,6 +53,9 @@ def checksoln():
 
 
 def addmultsoln(start, stop, vol=0):
+    """
+    Runs addsoln() for each number in start and stop inclusive, then runs checksoln()
+    """
     for n in range(start, stop + 1):
         addsoln(n, vol=vol)
     checksoln()
