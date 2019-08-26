@@ -2,6 +2,9 @@ from _prime_tools import primegen
 
 
 def nth_prime(n, vol=0):
+    """
+    Returns the nth prime using primegen.
+    """
     pg = primegen()
     for a in range(1, n - 1):
         next(pg)

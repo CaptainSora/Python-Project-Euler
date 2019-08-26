@@ -1,13 +1,4 @@
-def is_triangular(num):
-    """
-    Checks if num is a triangular number.
-    """
-    tri = [1]
-    while num > tri[-1]:
-        tri.append(0.5 * (len(tri) + 1) * (len(tri) + 2))
-    if num in tri:
-        return True
-    return False
+from _polygonal_tools import is_polygonal
 
 
 def to_num(word):
@@ -31,7 +22,7 @@ def count_triangular(file, vol=0):
 
     count = 0
     for word in wordlist:
-        if (is_triangular(to_num(word.strip('"')))):
+        if (is_polygonal(3, to_num(word.strip('"')))):
             count += 1
     if vol >= 1:
         print(f"There are {count} triangular number words.")
