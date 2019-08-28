@@ -62,9 +62,5 @@ def addmultsoln(start, stop, vol=0):
         addsoln(n, vol=vol)
     checksoln()
 
-<<<<<<< HEAD
-addmultsoln(41, 50)
-=======
 # addmultsoln(41, 50)
 addsoln(15, vol=3)
->>>>>>> e8edf0282be18d3f6518ee835f0d88c2c8b697a2
