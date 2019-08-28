@@ -8,7 +8,7 @@ def largest_palindrome(d, vol=0):
     """
     largest = 0
     for a in range(10 ** (d-1), 10 ** d):
-        for b in range(10 ** (d-1), 10 ** d):
+        for b in range(a, 10 ** d):
             if a * b > largest and is_palindrome(a * b):
                 largest = a * b
     return largest

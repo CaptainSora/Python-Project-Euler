@@ -1,15 +1,17 @@
+from _sequence_tools import Fibonacci
+
+
 def even_fib(ceiling, vol=0):
     """
     Returns the sum of all even Fibonacci numbers not exceeding ceiling.
     """
     total = 0
-    a = 1
-    b = 1
-    while b <= ceiling:
-        b += a
-        a = b - a
-        if b % 2 == 0:
-            total += b
+    fg = Fibonacci()
+    n = next(fg)
+    while n <= ceiling:
+        if n % 2 == 0:
+            total += n
+        n = next(fg)
     return total
 
 

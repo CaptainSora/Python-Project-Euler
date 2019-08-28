@@ -3,6 +3,7 @@ This module contains functions related in some way to prime numbers.
 """
 
 from itertools import compress
+from functools import reduce
 from time import perf_counter
 from math import sqrt
 
@@ -92,9 +93,10 @@ def sieve(size, floor=2):
 def prime_factors(num, mode="count"):
     """
     "count" : Returns the number of unique prime factors of num.
-    "max" : Returns the greatest prime factor of num.
-    "min" : Returns the smallest prime factor of num.
-    "list" : Returns a list of prime factors of num.
+    "max"   : Returns the greatest prime factor of num.
+    "min"   : Returns the smallest prime factor of num.
+    "list"  : Returns a list of prime factors of num.
+    "dict"  : Returns a dict of the prime factorization of num.
 
     e.g. input 43, test with primes [2, 3, 5], remainder [1, 1, 3]
     """
@@ -124,6 +126,31 @@ def prime_factors(num, mode="count"):
         return pflist
     elif mode == "dict":
         return pfactors
+
+
+def all_factors(num, mode="list"):
+    """
+    "list" : Returns a list of all proper divisors of num.
+    "sum"  : Returns the sum of all proper divisors of num.
+    """
+    pfac_dict = prime_factors(num, mode="dict")
+    pfac = [[x, pfac_dict[x]] for x in pfac_dict]
+    pfac.sort(key=lambda x: x[0])
+    fac_list = []
+    pfac_cur = [[x[0], 0] for x in pfac]
+    while pfac_cur != pfac:
+        fac_list.append(int(reduce(lambda x, y: x * y[0]**y[1], pfac_cur, 1)))
+        pfac_cur[0][1] += 1
+        for i in range(len(pfac_cur)):
+            if pfac_cur[i][1] > pfac[i][1]:
+                pfac_cur[i][1] = 0
+                pfac_cur[i+1][1] += 1
+            else:
+                break
+    if mode == "list":
+        return fac_list
+    elif mode == "sum":
+        return sum(fac_list)
 
 
 def LCM(numlist):
