@@ -3,6 +3,11 @@ from _polygonal_tools import poly
 from _int_tools import product
 from itertools import count
 
+"""
+Given n with prime factorization n = p1^a1 * p2^a2 * ... pk^ak,
+the number of divisors of n is (a1+1) * (a2+1) * ... (ak+1).
+"""
+
 
 def highly_divisible_poly(n, req_factors):
     """

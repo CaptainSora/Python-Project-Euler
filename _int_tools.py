@@ -5,8 +5,12 @@ from functools import reduce
 from itertools import count
 
 
-def array_to_int(intarray):
+def str_array_to_int(intarray):
     return int(''.join(intarray))
+
+
+def int_array_to_int(intarray):
+    return str_array_to_int(map(str, intarray))
 
 
 def int_to_int_array(num):
@@ -31,13 +35,3 @@ def factorial(num):
 
 def nCr(n, r):
     return int(product(range(n-r+1, n+1)) / product(range(1, r+1)))
-
-
-def Collatz(n):
-    for i in count(0):
-        if n == 1:
-            return i
-        elif n % 2 == 0:
-            n /= 2
-        else:
-            n = 3*n + 1

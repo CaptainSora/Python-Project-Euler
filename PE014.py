@@ -1,4 +1,4 @@
-from _int_tools import Collatz
+from _sequence_tools import Collatz
 
 
 def longest_collatz(ceiling):

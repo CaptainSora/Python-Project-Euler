@@ -1,14 +1,5 @@
 from _polygonal_tools import is_polygonal
-
-
-def to_num(word):
-    """
-    Calculates the value of the word.
-    """
-    value = 0
-    for char in word:
-        value += ord(char) - ord("A") + 1
-    return value
+from _str_tools import to_num
 
 
 def count_triangular(file, vol=0):
@@ -22,7 +13,7 @@ def count_triangular(file, vol=0):
 
     count = 0
     for word in wordlist:
-        if (is_polygonal(3, to_num(word.strip('"')))):
+        if (is_polygonal(3, to_num(word)):
             count += 1
     if vol >= 1:
         print(f"There are {count} triangular number words.")
