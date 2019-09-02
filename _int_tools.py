@@ -2,7 +2,6 @@
 This module contains functions related to integer formatting and math.
 """
 from functools import reduce
-from itertools import count
 
 
 def str_array_to_int(intarray):

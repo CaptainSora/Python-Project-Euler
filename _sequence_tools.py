@@ -2,6 +2,8 @@
 This module contains functions related to integer sequences.
 """
 
+from itertools import count
+
 
 def Collatz(n):
     """

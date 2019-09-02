@@ -11,5 +11,3 @@ def lexicographic(n):
 
 def solve(vol=0):
     return lexicographic(10**6)
-
-print(solve())
