@@ -33,7 +33,6 @@ def is_prime(n):
     """
     # Size verification
     if n <= 1:
-        print("Requires n >= 2.")
         return False
     elif n <= SMALLPRIMES[-1]:
         return n in SMALLPRIMES
