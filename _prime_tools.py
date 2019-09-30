@@ -51,15 +51,19 @@ def is_prime(n):
         r += 1
     for a in SMALLPRIMES[:index]:
         x = pow(a, d, n)
+        print(f"x is {x}")
         if x == 1 or x == n - 1:
             continue
-        for _ in range(r - 1):
+        for i in range(r - 1):
             x = pow(x, 2, n)
+            print(f"{i}: n-x = {n-x}")
             if x == n - 1:
+                print(f"{n - x}")
                 break
         if x == n - 1:
             continue
         # Composite
+        print(f'Failed on base {a}')
         return False
     # Prime
     return True

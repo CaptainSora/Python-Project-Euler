@@ -13,6 +13,7 @@ def int_array_to_int(intarray):
 
 
 def int_to_int_array(num):
+    """Deprecated, use int_to_digit_array(num)"""
     return [int(str(num)[a]) for a in range(len(str(num)))]
 
 

@@ -62,4 +62,5 @@ def addmultsoln(start, stop, vol=0):
         addsoln(n, vol=vol)
     checksoln()
 
-addmultsoln(1, 34)
+# addmultsoln(1, 34)  # Need to fix is_prime
+addsoln(34)
