@@ -1,48 +1,87 @@
 from importlib import import_module
 from time import perf_counter
 import json
+from _user_input import bool_ans, num_ans
 
 
-def addsoln(qnum, vol=0):
+def timesoln(qnum, vol=0):
     """
-    Times and runs the question file, and adds the time and output to
-    _solutions.json.
+    Times and runs the question file, and returns [output, runtime].
     """
-    # Time file execution
+    # Helper for savesoln()
     start = perf_counter()
     filename = f"PE{qnum:03}"
-    mod = import_module(filename)
-    soln = mod.solve()
-    stop = perf_counter()
+    try:
+        mod = import_module(filename)
+        soln = mod.solve(vol=vol)
+        stop = perf_counter()
+        return [soln, round(stop - start, 1)]
+    except ModuleNotFoundError:
+        return [None, None]
 
-    # Add solution to file
-    f = open('_solutions.json', 'r')
-    timedict = json.load(f)
-    f.close()
 
-    timedict[filename] = (soln, round(stop - start, 1))
-    print(f"Question {qnum} took {round(stop - start, 1)} seconds")
-
-    f = open('_solutions.json', 'w')
-    json.dump(timedict, f)
-    f.close()
+def savesoln(last_qnum, skipto=0, vol=0):
+    """
+    Saves all solutions (from 1 to last_qnum) to file.
+    """
+    # Load file
+    with open('_solutions.json', 'r') as f:
+        solndict = json.load(f)
+    # Safety checks
+    if skipto <= 0:
+        skipto = last_qnum
+    # Loop through all questions
+    for q in range(1, last_qnum + 1):
+        skip = q < skipto
+        filename = f"PE{q:03}"
+        # For new question
+        if filename not in solndict:
+            solndict[filename] = {
+                "solution": num_ans(
+                    f"What is the known solution for question {q}? Enter 0 " +
+                    f"for unsolved question."
+                ),
+                "output": None,
+                "runtime": None
+            }
+        # For existing questions
+        elif skip or not bool_ans(
+            f'Would you like to solve question {q}? Est. runtime: ' +
+            f'{solndict[filename]["runtime"]}s'
+        ):
+            if solndict[filename]["solution"] != solndict[filename]["output"]:
+                print(f"Question {q}'s output does not match the solution.")
+            continue
+        # Update info
+        solnlist = timesoln(q, vol=vol)
+        solndict[filename]["output"] = solnlist[0]
+        solndict[filename]["runtime"] = solnlist[1]
+        if solndict[filename]["solution"] == solndict[filename]["output"]:
+            bracket = '(correct)'
+        else:
+            bracket = f'(soln: {solndict[filename]["solution"]})'
+        print(
+            f'Question {q}: {solnlist[0]} {bracket}, {solnlist[1]}s runtime.'
+        )
+    # Only writes data if no errors
+    with open('_solutions.json', 'w') as f:
+        json.dump(solndict, f)
 
 
 def checksoln():
     """
     Checks the runtimes of all question in _solutions.json.
     """
-    f = open('_solutions.json', 'r')
-    timedict = json.load(f)
-    f.close()
-    threshold = 60
+    with open('_solutions.json', 'r') as f:
+        solndict = json.load(f)
+    THRESHOLD = 60
     fail = []
     close = []
 
-    for qnum in timedict:
-        if timedict[qnum][1] >= threshold:
+    for qnum in solndict:
+        if solndict[qnum]["runtime"] >= THRESHOLD:
             fail += [qnum]
-        elif timedict[qnum][1] >= threshold * 0.9:
+        elif solndict[qnum]["runtime"] >= THRESHOLD * 0.9:
             close += [qnum]
 
     if fail:
@@ -53,14 +92,4 @@ def checksoln():
         print("All questions run within time constraints.")
 
 
-def addmultsoln(start, stop, vol=0):
-    """
-    Runs addsoln() for each number in start and stop inclusive, then runs
-    checksoln()
-    """
-    for n in range(start, stop + 1):
-        addsoln(n, vol=vol)
-    checksoln()
-
-# addmultsoln(1, 34)  # Need to fix is_prime
-addsoln(34)
+savesoln(40, skipto=31)

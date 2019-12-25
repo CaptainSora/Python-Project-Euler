@@ -8,8 +8,9 @@ from time import perf_counter
 from math import sqrt
 
 # Required for the Miller-Rabin Primality Test
-SMALLPRIMES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41]
-CEILINGS = [
+SMALLPRIMES = [2, 3, 5, 7, 11, 13, 17, 19, 23, 29, 31, 37, 41, 43]
+CEILINGS = [  # https://oeis.org/A006945
+    9,
     2047,
     1373653,
     25326001,
@@ -41,7 +42,7 @@ def is_prime(n):
         return False
     # Prime testing setup
     index = 1
-    while n > CEILINGS[index - 1]:
+    while n >= CEILINGS[index - 1]:
         index += 1
     # Miller primality test with SMALLPRIMES[:index]
     d = n - 1
@@ -51,19 +52,15 @@ def is_prime(n):
         r += 1
     for a in SMALLPRIMES[:index]:
         x = pow(a, d, n)
-        print(f"x is {x}")
         if x == 1 or x == n - 1:
             continue
-        for i in range(r - 1):
+        for _ in range(r - 1):
             x = pow(x, 2, n)
-            print(f"{i}: n-x = {n-x}")
             if x == n - 1:
-                print(f"{n - x}")
                 break
         if x == n - 1:
             continue
         # Composite
-        print(f'Failed on base {a}')
         return False
     # Prime
     return True

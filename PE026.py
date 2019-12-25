@@ -36,4 +36,4 @@ def reciprocal_cycles(ceiling):
 
 
 def solve(vol=0):
-    reciprocal_cycles(1000)
+    return reciprocal_cycles(1000)

@@ -2,6 +2,7 @@
 This module contains functions related to integer formatting and math.
 """
 from functools import reduce
+from math import gcd
 
 
 def str_array_to_int(intarray):
@@ -35,3 +36,10 @@ def factorial(num):
 
 def nCr(n, r):
     return int(product(range(n-r+1, n+1)) / product(range(1, r+1)))
+
+
+def phi(n):
+    """
+    Returns the value of ϕ(n), or the Euler Totient function.
+    """
+    return len([x for x in range(1, n) if gcd(n, x) == 1])
