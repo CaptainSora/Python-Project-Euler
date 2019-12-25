@@ -92,4 +92,5 @@ def checksoln():
         print("All questions run within time constraints.")
 
 
-savesoln(40, skipto=31)
+# savesoln(55, skipto=51)
+# All questions starting from 51 need to be manually checked

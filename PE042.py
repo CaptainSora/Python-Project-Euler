@@ -13,7 +13,7 @@ def count_triangular(file, vol=0):
 
     count = 0
     for word in wordlist:
-        if (is_polygonal(3, to_num(word)):
+        if is_polygonal(3, to_num(word)):
             count += 1
     if vol >= 1:
         print(f"There are {count} triangular number words.")

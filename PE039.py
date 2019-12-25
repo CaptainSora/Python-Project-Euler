@@ -16,6 +16,3 @@ def max_pythag_trips(ceiling):
 
 def solve(vol=0):
     return max_pythag_trips(1000)
-
-
-print(solve())

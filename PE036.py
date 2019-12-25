@@ -14,6 +14,3 @@ def sum_double_base_palindromes(ceiling):
 
 def solve(vol=0):
     return sum_double_base_palindromes(1000000)
-
-
-print(solve())
