@@ -3,12 +3,16 @@ from itertools import count
 
 
 def pent(n):
-    """ Calculates the nth pentagonal number. """
+    """
+    Calculates the nth pentagonal number.
+    """
     return int(n * (3 * n - 1) / 2)
 
 
 def is_pent(p):
-    """ Predicate for whether p is pentagonal. """
+    """
+    Predicate for whether p is pentagonal.
+    """
     if p <= 0:
         return False
     n = int(sqrt(p * 2 / 3)) + 1

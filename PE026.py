@@ -1,4 +1,5 @@
-from math import log10, ceil
+from math import ceil
+from math import log10
 
 """
 The number of cycles can be calculated from the cycle of remainders.
@@ -25,14 +26,12 @@ def reciprocal_cycles(ceiling):
     """
     Returns the number with the largest cycle length below ceiling.
     """
-    maxcycles = 0
-    num = 0
+    num_cycles = [0, 0]
     for a in range(2, ceiling):
         c = cycles(a)
-        if c > maxcycles:
-            maxcycles = c
-            num = a
-    return num
+        if c > num_cycles[1]:
+            num_cycles = [a, c]
+    return num_cycles[0]
 
 
 def solve(vol=0):

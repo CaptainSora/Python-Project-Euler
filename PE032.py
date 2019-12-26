@@ -1,5 +1,5 @@
-from _pandigital_tools import is_pandigital
 from itertools import count
+from _pandigital_tools import is_pandigital
 
 
 def pand_products():

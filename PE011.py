@@ -1,5 +1,5 @@
+from math import prod
 from math import sqrt
-from _int_tools import product
 
 
 def grid_product(length):
@@ -15,13 +15,13 @@ def grid_product(length):
         prodlist = [maxprod]
         # Checks to the right, bottom left, below, and bottom right in order
         if i % size <= size - length:
-            prodlist += [product(grid[i:i + length])]
+            prodlist += [prod(grid[i:i + length])]
         if i <= size * (size - length + 1) and i % 20 >= length - 1:
-            prodlist += [product(grid[i:i + (length * (size - 1)):size - 1])]
+            prodlist += [prod(grid[i:i + (length * (size - 1)):size - 1])]
         if i <= size * (size - length + 1):
-            prodlist += [product(grid[i:i + (length * size):size])]
+            prodlist += [prod(grid[i:i + (length * size):size])]
         if i <= size * (size - length + 1) and i % 20 >= length - 1:
-            prodlist += [product(grid[i:i + (length * (size + 1)):size + 1])]
+            prodlist += [prod(grid[i:i + (length * (size + 1)):size + 1])]
         maxprod = max(prodlist)
     return maxprod
 

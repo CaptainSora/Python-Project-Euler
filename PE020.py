@@ -1,12 +1,12 @@
-from PE016 import digit_sum
 from _int_tools import factorial
+from _int_tools import int_to_digit_array
 
 
 def factorial_digit_sum(n):
     """
     Returns the sum of the digits in the number n!
     """
-    return digit_sum(factorial(n))
+    return sum(int_to_digit_array(factorial(n)))
 
 
 def solve(vol=0):

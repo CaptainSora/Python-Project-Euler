@@ -1,7 +1,7 @@
 from _sequence_tools import Fibonacci
 
 
-def even_fib(ceiling, vol=0):
+def even_fib(ceiling):
     """
     Returns the sum of all even Fibonacci numbers not exceeding ceiling.
     """

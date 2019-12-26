@@ -1,7 +1,7 @@
-from _prime_tools import prime_factors
-from _polygonal_tools import poly
-from _int_tools import product
 from itertools import count
+from math import prod
+from _polygonal_tools import poly
+from _prime_tools import prime_factors
 
 """
 Given n with prime factorization n = p1^a1 * p2^a2 * ... pk^ak,
@@ -15,7 +15,7 @@ def highly_divisible_poly(n, req_factors):
     """
     for i in count(1):
         pfactors = prime_factors(poly(n, i), mode="dict")
-        if product([pfactors[x] + 1 for x in pfactors]) >= req_factors:
+        if prod([pfactors[x] + 1 for x in pfactors]) >= req_factors:
             return poly(n, i)
 
 

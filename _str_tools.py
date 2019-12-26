@@ -5,7 +5,7 @@ This module contains functions related to string formatting and math.
 
 def to_num(word, case="upper"):
     """
-    Calculates the value of the word.
+    Calculates the numerical value of the letters in word.
 
     "upper": all letters are uppercase
     "lower": all letters are lowercase

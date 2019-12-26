@@ -1,4 +1,5 @@
-from datetime import date, timedelta
+from datetime import date
+from datetime import timedelta
 
 
 def count_weekday(start, stop, wd_target=0):
@@ -6,12 +7,11 @@ def count_weekday(start, stop, wd_target=0):
     Returns the number of days between start and stop inclusive which is the
     first day of the month and is the specified weekday, with 0 being Monday.
     """
-    day = timedelta(days=1)
     counter = 0
-    while start != stop + day:
+    while start != stop + timedelta(days=1):
         if start.weekday() == wd_target and start.day == 1:
             counter += 1
-        start += day
+        start += timedelta(days=1)
     return counter
 
 

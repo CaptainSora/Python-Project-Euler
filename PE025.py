@@ -1,5 +1,5 @@
-from _sequence_tools import Fibonacci
 from itertools import count
+from _sequence_tools import Fibonacci
 
 
 def large_fib(d):

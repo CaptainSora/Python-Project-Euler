@@ -1,6 +1,7 @@
 from math import gcd
-from _int_tools import int_to_int_array, int_array_to_int
-from functools import reduce
+from math import prod
+from _int_tools import int_array_to_int
+from _int_tools import int_to_digit_array
 
 
 def simplify(frac):
@@ -20,7 +21,7 @@ def fake_simplify(frac):
 
     If no common digit exists, returns False.
     """
-    frac = list(map(int_to_int_array, frac))
+    frac = list(map(int_to_digit_array, frac))
     for d in frac[0]:
         if d == 0:
             continue
@@ -34,15 +35,16 @@ def fake_simplify(frac):
 def digit_cancelling_fractions():
     """
     Returns the denominator of the product of all digit cancelling fractions
-    in simplest form.
+    in simplest form. Fractions must have two-digit numerator and denominators
+    and have 0 < a/b < 1.
     """
     fraclist = []
     for a in range(10, 100):
         for b in range(a+1, 100):
             f = fake_simplify([a, b])
-            if f != False and f == simplify([a, b]):
+            if not f and f == simplify([a, b]):
                 fraclist.append([a, b])
-    return simplify(reduce(lambda x, y: [x[0]*y[0], x[1]*y[1]], fraclist))[1]
+    return prod([x[1] for x in fraclist])
 
 
 def solve(vol=0):

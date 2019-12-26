@@ -1,4 +1,5 @@
-from _int_tools import int_to_digit_array, product
+from math import prod
+from _int_tools import int_to_digit_array
 
 
 def largest_product(adj):
@@ -7,10 +8,7 @@ def largest_product(adj):
     """
     with open('p008_number.txt') as f:
         numarray = int_to_digit_array(f.read())
-    maxsum = 0
-    for i in range(len(numarray) - adj):
-        maxsum = max(maxsum, product(numarray[i:i+adj]))
-    return maxsum
+    return max([prod(numarray[i:i+adj]) for i in range(len(numarray) - adj)])
 
 
 def solve(vol=0):
